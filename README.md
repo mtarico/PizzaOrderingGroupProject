@@ -1,116 +1,92 @@
-Frontend:
-React + Vite
+# Pizza Ordering System
 
-Backend:
-Node.js + Express
+> Sprint 1 — Group Project
 
-Database:
-SQLite (development)
-PostgreSQL (optional later)
+## Quick Start (clone & run)
 
-ORM:
-Prisma
+### 1. Clone the repo
+```bash
+git clone https://github.com/mtarico/PizzaOrderingGroupProject.git
+cd PizzaOrderingGroupProject
+```
 
-pizza-ordering-system
-│
-├── frontend
-│   ├── Home
-│   ├── Menu
-│   ├── Cart
-│   └── Checkout
-│
-├── backend
-│   ├── Menu API
-│   ├── Cart API
-│   └── Billing API
+### 2. Start the backend
+```bash
+cd backend
+npm install
+npm run db:setup    # creates SQLite DB and seeds menu data
+npm run dev         # runs on http://localhost:3001
+```
 
-Scrum Master
-Focus on:
+### 3. Start the frontend (new terminal)
+```bash
+cd frontend
+npm install
+npm run dev         # runs on http://localhost:5173
+```
 
-GitHub repository
-Project board
-Sprint tracking
-Pull request reviews
-Daily check-ins
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
+---
 
-Front-End Developer
-Sprint 1 Tasks:
+## Tech Stack
 
-TSK-001 Wireframes
-TSK-002 Homepage
-TSK-003 Responsive layout
-TSK-004 Menu page
-TSK-007 Final bill display
-TSK-008 Confirmation page
+| Layer    | Tech                        |
+|----------|-----------------------------|
+| Frontend | React + Vite                |
+| Backend  | Node.js + Express           |
+| Database | SQLite (dev) / PostgreSQL (later) |
+| ORM      | Prisma v5                   |
 
-Deliverables:
+## Project Structure
 
-Home Page
-Menu Page
-Cart Page
-Confirmation Page
+```
+pizza-ordering-system/
+├── frontend/
+│   └── src/
+│       ├── pages/       # Home, Menu, Cart, Confirmation
+│       ├── components/  # Navbar, CategoryCard
+│       ├── context/     # CartContext (global cart state)
+│       └── data/        # menuData.js (sample data)
+├── backend/
+│   ├── src/
+│   │   └── routes/      # menu.js, billing.js
+│   └── prisma/          # schema.prisma, seed.js
+└── .gitignore
+```
 
-with sample data.
+## API Endpoints
 
+| Method | Route        | Description                        |
+|--------|--------------|------------------------------------|
+| GET    | `/menu`      | All menu items (filter: `?category=pizza`) |
+| POST   | `/calculate` | `{ items: [{price, qty}] }` → `{ subtotal, tax, total }` |
+| GET    | `/health`    | Server health check                |
 
-Back-End Developer
-Sprint 1 Tasks:
+---
 
-TSK-006 Bill calculation
-TSK-022 Environment setup
+## Sprint 1 Tasks
 
-Deliverables:
+### Frontend
+- TSK-001 Wireframes
+- TSK-002 Homepage
+- TSK-003 Responsive layout
+- TSK-004 Menu page
+- TSK-007 Final bill display
+- TSK-008 Confirmation page
 
-GET /menu
-POST /cart
-POST /calculate
+### Backend
+- TSK-006 Bill calculation
+- TSK-022 Environment setup
 
-Even if calculations are simple.
+### QA
+- TSK-009 UI/UX testing
+- TSK-010 Bug reporting
 
-QA
-Sprint 1 Tasks:
+## Sprint 1 Goal
 
-TSK-009 Testing
-TSK-010 Bug reporting
+By end of week, a user should be able to:
 
-Create:
+**Open site → View Menu → Add Pizza → Remove Pizza → See Total**
 
-Test Cases
-Bug Tracker
-Acceptance Checklist
-
-from day one.
-
-
-
-Must Complete For Sprint 1
-
-✅ Homepage
-
-✅ Menu Page
-
-✅ Responsive Layout
-
-✅ Cart Add/Remove
-
-✅ Bill Calculation
-
-
-By the end of this week a user should be able to:
-
-Open Website
-↓
-View Menu
-↓
-Add Pizza
-↓
-Remove Pizza
-↓
-See Total
-
-Even if:
-
-Payment is fake
-Data isn't stored
-Database isn't complete
+Payment is fake, database is optional for Sprint 1.
