@@ -1,0 +1,146 @@
+.home {
+  min-height: calc(100vh - 64px);
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 2px;
+  margin: 0 0 1.5rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.order-type-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.toggle-btn {
+  padding: 0.75rem 2.5rem;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.toggle-btn.active,
+.toggle-btn:hover {
+  background: #fff;
+  color: #d32f2f;
+}
+
+.toggle-or {
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Promos */
+.promos-section {
+  padding: 2rem;
+  background: #fff8f0;
+}
+
+.promos-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.promos-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.promos-scroll::-webkit-scrollbar-thumb {
+  background: #d32f2f;
+  border-radius: 4px;
+}
+
+.promo-card {
+  flex-shrink: 0;
+  background: #fff;
+  border: 2px solid #ffd54f;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  min-width: 240px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.promo-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #e65100;
+  background: #fff3e0;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+
+.promo-label {
+  margin: 0.5rem 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #212121;
+}
+
+.promo-desc {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  color: #616161;
+}
+
+.promo-cta {
+  padding: 0.4rem 1rem;
+  background: #d32f2f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.promo-cta:hover {
+  background: #b71c1c;
+}
+
+/* Browse */
+.browse-section {
+  padding: 2rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #212121;
+  margin: 0 0 1.25rem;
+}
+
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .hero-title { font-size: 2rem; }
+  .toggle-btn { padding: 0.6rem 1.5rem; font-size: 0.95rem; }
+  .category-grid { justify-content: center; }
+}

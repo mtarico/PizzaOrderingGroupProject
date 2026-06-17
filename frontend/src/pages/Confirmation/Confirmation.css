@@ -1,0 +1,94 @@
+.confirmation-page {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff8f0;
+  padding: 2rem;
+}
+
+.confirmation-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 2px solid #e0e0e0;
+  padding: 2.5rem;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+.confirmation-icon { font-size: 3.5rem; margin-bottom: 0.5rem; }
+
+.confirmation-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #212121;
+  margin: 0 0 0.25rem;
+}
+
+.confirmation-sub {
+  color: #757575;
+  margin: 0 0 1rem;
+}
+
+.order-number {
+  display: inline-block;
+  background: #fff3e0;
+  color: #e65100;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.3rem 1rem;
+  border-radius: 999px;
+  margin-bottom: 1.5rem;
+}
+
+.confirmation-items {
+  text-align: left;
+  border: 2px solid #f0f0f0;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.conf-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #424242;
+}
+
+.conf-tax { color: #757575; }
+
+.conf-total {
+  font-weight: 800;
+  font-size: 1rem;
+  color: #212121;
+  border-top: 2px solid #e0e0e0;
+  padding-top: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.confirmation-eta {
+  font-size: 0.9rem;
+  color: #424242;
+  margin-bottom: 1.5rem;
+}
+
+.btn-home {
+  padding: 0.85rem 2.5rem;
+  background: #d32f2f;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.btn-home:hover { background: #b71c1c; }
