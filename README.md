@@ -44,7 +44,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 pizza-ordering-system/
 ├── frontend/
 │   └── src/
-│       ├── pages/       # Home, Menu, Cart, Confirmation
+│       ├── pages/       # Home, Menu, PizzaDetail, Cart, Confirmation
 │       ├── components/  # Navbar, CategoryCard
 │       ├── context/     # CartContext (global cart state)
 │       └── data/        # menuData.js (sample data)
