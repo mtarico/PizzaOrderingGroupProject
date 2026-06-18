@@ -3,11 +3,12 @@ import { useCart } from "../../context/CartContext";
 import "./Confirmation.css";
 
 export default function Confirmation() {
-  const { cart, subtotal, clearCart } = useCart();
+  const { cart, subtotal, clearCart, discount } = useCart();
   const navigate = useNavigate();
   const orderNumber = Math.floor(Math.random() * 90000) + 10000;
   const tax = subtotal * 0.08;
-  const total = subtotal + tax;
+  const discountAmount = Math.min(discount, subtotal);
+  const total = subtotal + tax - discountAmount;
 
   function handleDone() {
     clearCart();
@@ -24,8 +25,11 @@ export default function Confirmation() {
 
         <div className="confirmation-items">
           {cart.map((item) => (
-            <div key={item.id} className="conf-item">
-              <span>{item.name} × {item.qty}</span>
+            <div key={item.cartKey} className="conf-item">
+              <span>
+                {item.name} × {item.qty}
+                {item.options && <span className="conf-options"> ({item.options})</span>}
+              </span>
               <span>${(item.price * item.qty).toFixed(2)}</span>
             </div>
           ))}
@@ -33,6 +37,12 @@ export default function Confirmation() {
             <span>Tax (8%)</span>
             <span>${tax.toFixed(2)}</span>
           </div>
+          {discountAmount > 0 && (
+            <div className="conf-item conf-discount">
+              <span>Discount</span>
+              <span>−${discountAmount.toFixed(2)}</span>
+            </div>
+          )}
           <div className="conf-item conf-total">
             <span>Total Charged</span>
             <span>${total.toFixed(2)}</span>

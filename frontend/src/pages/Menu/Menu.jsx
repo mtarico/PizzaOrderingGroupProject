@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { categories, menuItems } from "../../data/menuData";
 import "./Menu.css";
@@ -9,17 +9,22 @@ export default function Menu() {
   const [activeCategory, setActiveCategory] = useState(
     searchParams.get("category") || "pizza"
   );
-  const { addItem, cart } = useCart();
+  const { addItem } = useCart();
+  const navigate = useNavigate();
 
   const filtered = menuItems.filter((item) => item.category === activeCategory);
-
-  function getQty(id) {
-    return cart.find((i) => i.id === id)?.qty || 0;
-  }
 
   function handleCategory(id) {
     setActiveCategory(id);
     setSearchParams({ category: id });
+  }
+
+  function handleItemClick(item) {
+    if (item.category === "pizza") {
+      navigate(`/menu/${item.id}`);
+    } else {
+      addItem({ ...item, cartKey: String(item.id) });
+    }
   }
 
   return (
@@ -38,25 +43,28 @@ export default function Menu() {
         ))}
       </div>
 
-      <div className="menu-grid">
-        {filtered.map((item) => (
-          <div key={item.id} className="menu-item-card">
-            <div className="menu-item-img">{categories.find(c => c.id === item.category)?.emoji}</div>
-            <div className="menu-item-info">
-              <h3 className="menu-item-name">{item.name}</h3>
-              <p className="menu-item-desc">{item.description}</p>
-              <div className="menu-item-footer">
-                <span className="menu-item-price">${item.price.toFixed(2)}</span>
-                <div className="qty-controls">
-                  <button className="qty-btn" onClick={() => addItem(item)}>+</button>
-                  {getQty(item.id) > 0 && (
-                    <span className="qty-display">{getQty(item.id)}</span>
-                  )}
-                </div>
+      <div className="menu-list">
+        {filtered.map((item) => {
+          const isPizza = item.category === "pizza";
+          return (
+            <div key={item.id} className="menu-list-item">
+              <div className="menu-item-thumb">
+                {categories.find((c) => c.id === item.category)?.emoji}
               </div>
+              <div className="menu-item-details">
+                <span className="menu-item-name">{item.name}</span>
+                <span className="menu-item-desc">{item.description}</span>
+              </div>
+              <span className="menu-item-price">${item.price.toFixed(2)}</span>
+              <button
+                className={`menu-item-action ${isPizza ? "btn-customize" : "btn-add"}`}
+                onClick={() => handleItemClick(item)}
+              >
+                {isPizza ? "Customize →" : "+ Add"}
+              </button>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
