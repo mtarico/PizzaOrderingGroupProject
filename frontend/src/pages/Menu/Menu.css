@@ -8,7 +8,7 @@
   font-size: 2rem;
   font-weight: 800;
   color: #d32f2f;
-  margin: 0 0 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .category-tabs {
@@ -26,8 +26,7 @@
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  font-family: inherit;
-  transition: all 0.2s;
+  transition: 0.2s;
   color: #424242;
 }
 
@@ -38,23 +37,48 @@
   color: #fff;
 }
 
-/* List layout */
 .menu-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .menu-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .menu-list {
+    grid-template-columns: 1fr;
+  }
 }
 
 .menu-list-item {
-  display: flex;
+  display: grid;
+  grid-template-columns: 50px 1fr auto;
   align-items: center;
-  gap: 1.25rem;
-  padding: 1.1rem 0;
-  border-bottom: 1px solid #eeeeee;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-.menu-list-item:last-child {
-  border-bottom: none;
+/* Mobile item layout */
+@media (max-width: 600px) {
+  .menu-list-item {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .menu-item-action {
+    width: 100%;
+  }
 }
 
 .menu-item-thumb {
@@ -65,12 +89,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.25rem;
-  flex-shrink: 0;
+  font-size: 2rem;
+}
+
+@media (max-width: 600px) {
+  .menu-item-thumb {
+    width: 60px;
+    height: 55px;
+    font-size: 2.5rem;
+    margin: 0 auto;
+  }
 }
 
 .menu-item-details {
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
@@ -91,7 +122,6 @@
   font-size: 1rem;
   font-weight: 700;
   color: #d32f2f;
-  min-width: 56px;
   text-align: right;
 }
 
@@ -102,8 +132,7 @@
   font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
-  font-family: inherit;
-  transition: all 0.2s;
+  transition: 0.2s;
   white-space: nowrap;
 }
 
@@ -111,20 +140,15 @@
   background: #d32f2f;
   color: #fff;
 }
-
-.btn-add:hover { background: #b71c1c; }
+.btn-add:hover {
+  background: #b71c1c;
+}
 
 .btn-customize {
   background: #fff3e0;
   color: #e65100;
   border: 2px solid #ffcc80;
 }
-
 .btn-customize:hover {
   background: #ffe0b2;
-}
-
-@media (max-width: 600px) {
-  .menu-item-thumb { width: 60px; height: 55px; font-size: 1.75rem; }
-  .menu-item-action { padding: 0.4rem 0.7rem; font-size: 0.8rem; }
 }

@@ -93,3 +93,56 @@
   .nav-link { font-size: 0.8rem; }
   .navbar { padding: 0 1rem; }
 }
+
+/* MOBILE MENU TOGGLE BUTTON */
+.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #212121;
+}
+
+/* WRAPPER FOR COLLAPSING NAVBAR CONTENT */
+.navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* MOBILE STYLES */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+    margin-right: 10px;
+  }
+
+  .navbar-content {
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem 0;
+    background: #fff;
+  }
+
+  .navbar-content.open {
+    display: flex;
+  }
+
+  .navbar-left,
+  .navbar-right {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .navbar {
+    height: auto;
+    padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
