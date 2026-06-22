@@ -12,13 +12,18 @@ export default function App() {
     <CartProvider>
       <BrowserRouter>
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/menu" element={<Menu />} />
-          <Route path="/menu/:id" element={<PizzaDetail />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/confirmation" element={<Confirmation />} />
-        </Routes>
+
+        {/* GLOBAL WRAPPER */}
+        <div className="wrapper">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/menu" element={<Menu />} />
+            <Route path="/menu/:id" element={<PizzaDetail />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/confirmation" element={<Confirmation />} />
+          </Routes>
+        </div>
+
       </BrowserRouter>
     </CartProvider>
   );

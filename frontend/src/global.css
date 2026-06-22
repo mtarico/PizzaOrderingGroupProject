@@ -8,3 +8,46 @@ body {
 }
 
 button { cursor: pointer; }
+/* Global mobile padding */
+@media (max-width: 600px) {
+  body {
+    padding: 0 1rem;
+  }
+}
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+    text-align: center;
+  }
+}
+@media (max-width: 600px) {
+  button {
+    font-size: 1rem;
+    padding: 0.9rem 1rem;
+  }
+}
+* {
+  transition: all 0.15s ease;
+}
+.container,
+.page-wrapper,
+.menu-page,
+.cart-page,
+.detail-page {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}

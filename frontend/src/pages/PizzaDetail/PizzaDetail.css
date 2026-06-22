@@ -13,23 +13,20 @@
   cursor: pointer;
   padding: 0;
   margin-bottom: 1.5rem;
-  font-family: inherit;
   display: flex;
   align-items: center;
   gap: 0.25rem;
   transition: color 0.15s;
 }
-
 .back-btn:hover { color: #d32f2f; }
 
+/* Layout */
 .detail-layout {
-  display: grid;
-  grid-template-columns: 360px 1fr;
-  gap: 3rem;
-  align-items: start;
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
 }
 
-/* Left image */
 .detail-image {
   background: #fff3e0;
   border-radius: 16px;
@@ -41,20 +38,20 @@
   font-size: 8rem;
 }
 
-/* Right panel */
 .detail-name {
   font-size: 1.75rem;
   font-weight: 800;
   color: #212121;
-  margin: 0 0 0.4rem;
+  margin-bottom: 0.4rem;
 }
 
 .detail-desc {
   font-size: 0.9rem;
   color: #757575;
-  margin: 0 0 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
+/* Option rows */
 .option-row {
   border: 1.5px solid #e0e0e0;
   border-radius: 10px;
@@ -70,7 +67,6 @@
   font-size: 0.9rem;
   color: #212121;
   min-width: 70px;
-  flex-shrink: 0;
 }
 
 /* Quantity */
@@ -86,11 +82,8 @@
   font-size: 1.4rem;
   cursor: pointer;
   color: #d32f2f;
-  font-family: inherit;
-  line-height: 1;
   transition: opacity 0.15s;
 }
-
 .qty-btn:hover { opacity: 0.7; }
 
 .qty-value {
@@ -100,7 +93,7 @@
   text-align: center;
 }
 
-/* Radio */
+/* Radio groups */
 .radio-group {
   display: flex;
   flex-wrap: wrap;
@@ -113,14 +106,12 @@
   gap: 0.35rem;
   font-size: 0.88rem;
   color: #424242;
-  cursor: pointer;
 }
 
 .radio-option input[type="radio"] {
   accent-color: #d32f2f;
   width: 16px;
   height: 16px;
-  cursor: pointer;
 }
 
 .upcharge {
@@ -141,7 +132,6 @@
 
 .detail-total-sub {
   font-size: 0.85rem;
-  font-weight: 400;
   color: #9e9e9e;
 }
 
@@ -155,21 +145,44 @@
   font-size: 1.05rem;
   font-weight: 700;
   cursor: pointer;
-  font-family: inherit;
   transition: background 0.2s;
 }
-
 .btn-add-cart:hover { background: #b71c1c; }
 
+/* Not found */
 .detail-not-found {
   text-align: center;
   padding: 4rem;
 }
 
-@media (max-width: 720px) {
+/* MOBILE LAYOUT */
+@media (max-width: 768px) {
   .detail-layout {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 1.5rem;
   }
-  .detail-image { height: 200px; font-size: 5rem; }
+
+  .detail-image {
+    height: 200px;
+    font-size: 5rem;
+    margin: 0 auto;
+  }
+
+  .detail-name,
+  .detail-desc {
+    text-align: center;
+  }
+
+  .qty-control {
+    justify-content: center;
+  }
+
+  .radio-group {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .btn-add-cart {
+    font-size: 1.1rem;
+  }
 }
