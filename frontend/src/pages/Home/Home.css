@@ -140,7 +140,38 @@
 }
 
 @media (max-width: 600px) {
-  .hero-title { font-size: 2rem; }
-  .toggle-btn { padding: 0.6rem 1.5rem; font-size: 0.95rem; }
-  .category-grid { justify-content: center; }
+  .hero {
+    padding: 2rem 1rem;
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+    line-height: 1.2;
+    letter-spacing: 1px;
+  }
+
+  .order-type-toggle {
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .toggle-btn {
+    padding: 0.7rem 1.25rem;
+    font-size: 0.95rem;
+    width: 100%;
+    max-width: 220px;
+  }
+
+  .promos-section,
+  .browse-section {
+    padding: 1.25rem 0.5rem;
+  }
+
+  .promo-card {
+    min-width: 82vw;
+  }
+
+  .category-grid {
+    justify-content: center;
+  }
 }

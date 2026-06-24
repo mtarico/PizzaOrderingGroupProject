@@ -25,11 +25,11 @@ export default function Navbar() {
         </div>
 
         <div className="navbar-center">
-          <Link to="/" className="logo">🍕 PizzaCo</Link>
+          <Link to="/" className="logo">🍕 Eats-A-Pizza</Link>
         </div>
 
         <div className="navbar-right">
-          <button className="btn-signin">Sign In</button>
+          <Link to="/admin" className="btn-signin">Admin</Link>
           <Link to="/cart" className="cart-icon">
             🛒
             {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}

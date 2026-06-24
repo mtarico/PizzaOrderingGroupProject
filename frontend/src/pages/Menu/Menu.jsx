@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
-import { categories, menuItems } from "../../data/menuData";
+import { categories } from "../../data/menuData";
+import { fetchMenuItems } from "../../api/menuApi";
 import "./Menu.css";
 
 export default function Menu() {
@@ -9,10 +10,30 @@ export default function Menu() {
   const [activeCategory, setActiveCategory] = useState(
     searchParams.get("category") || "pizza"
   );
+  const [menuItems, setMenuItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const { addItem } = useCart();
   const navigate = useNavigate();
 
-  const filtered = menuItems.filter((item) => item.category === activeCategory);
+  useEffect(() => {
+    async function loadMenu() {
+      try {
+        setLoading(true);
+        const items = await fetchMenuItems(activeCategory);
+        setMenuItems(items);
+        setError("");
+      } catch (err) {
+        setError(err.message || "Unable to load menu");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadMenu();
+  }, [activeCategory]);
+
+  const filtered = useMemo(() => menuItems, [menuItems]);
 
   function handleCategory(id) {
     setActiveCategory(id);
@@ -43,19 +64,26 @@ export default function Menu() {
         ))}
       </div>
 
+      {loading && <p className="menu-status">Loading menu...</p>}
+      {error && <p className="menu-status error">{error}</p>}
+
       <div className="menu-list">
-        {filtered.map((item) => {
+        {!loading && !error && filtered.map((item) => {
           const isPizza = item.category === "pizza";
           return (
             <div key={item.id} className="menu-list-item">
               <div className="menu-item-thumb">
-                {categories.find((c) => c.id === item.category)?.emoji}
+                {item.image ? (
+                  <img src={item.image} alt={item.name} loading="lazy" />
+                ) : (
+                  categories.find((c) => c.id === item.category)?.emoji
+                )}
               </div>
               <div className="menu-item-details">
                 <span className="menu-item-name">{item.name}</span>
                 <span className="menu-item-desc">{item.description}</span>
               </div>
-              <span className="menu-item-price">${item.price.toFixed(2)}</span>
+              <span className="menu-item-price">${Number(item.price).toFixed(2)}</span>
               <button
                 className={`menu-item-action ${isPizza ? "btn-customize" : "btn-add"}`}
                 onClick={() => handleItemClick(item)}

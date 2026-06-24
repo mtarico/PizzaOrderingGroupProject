@@ -32,10 +32,27 @@
   border-radius: 16px;
   border: 2px solid #ffe0b2;
   height: 340px;
+  width: 340px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 8rem;
+  overflow: hidden;
+}
+
+.detail-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.detail-image-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 .detail-name {
@@ -157,13 +174,19 @@
 
 /* MOBILE LAYOUT */
 @media (max-width: 768px) {
+  .detail-page {
+    padding: 1rem 0.75rem 1.5rem;
+  }
+
   .detail-layout {
     flex-direction: column;
     gap: 1.5rem;
   }
 
   .detail-image {
-    height: 200px;
+    height: 220px;
+    width: 100%;
+    max-width: 320px;
     font-size: 5rem;
     margin: 0 auto;
   }

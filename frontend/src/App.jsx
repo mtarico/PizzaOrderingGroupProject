@@ -6,6 +6,7 @@ import Menu from "./pages/Menu/Menu";
 import Cart from "./pages/Cart/Cart";
 import Confirmation from "./pages/Confirmation/Confirmation";
 import PizzaDetail from "./pages/PizzaDetail/PizzaDetail";
+import Admin from "./pages/Admin/Admin";
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
             <Route path="/menu/:id" element={<PizzaDetail />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/confirmation" element={<Confirmation />} />
+            <Route path="/admin" element={<Admin />} />
           </Routes>
         </div>
 

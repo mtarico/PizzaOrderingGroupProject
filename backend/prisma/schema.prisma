@@ -13,4 +13,5 @@ model MenuItem {
   name        String
   description String
   price       Float
+  image       String?
 }

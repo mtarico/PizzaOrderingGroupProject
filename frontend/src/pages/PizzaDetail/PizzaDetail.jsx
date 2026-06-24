@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
-import { menuItems } from "../../data/menuData";
+import { fetchMenuItemById } from "../../api/menuApi";
 import "./PizzaDetail.css";
 
 const SIZE_UPCHARGE = { small: 0, medium: 2, large: 4 };
@@ -18,12 +18,30 @@ export default function PizzaDetail() {
   const navigate = useNavigate();
   const { addItem } = useCart();
 
-  const item = menuItems.find((i) => i.id === Number(id));
-
+  const [item, setItem] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState("medium");
   const [sauce, setSauce] = useState("Marinara");
   const [crust, setCrust] = useState("Thin");
+
+  useEffect(() => {
+    async function loadItem() {
+      try {
+        setLoading(true);
+        const fetchedItem = await fetchMenuItemById(id);
+        setItem(fetchedItem);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadItem();
+  }, [id]);
+
+  if (loading) {
+    return <div className="detail-not-found"><p>Loading item...</p></div>;
+  }
 
   if (!item) {
     return (
@@ -54,7 +72,13 @@ export default function PizzaDetail() {
 
       <div className="detail-layout">
         {/* Left: image */}
-        <div className="detail-image">🍕</div>
+        <div className="detail-image">
+          {item.image ? (
+            <img src={item.image} alt={item.name} loading="lazy" />
+          ) : (
+            <span className="detail-image-fallback">🍕</span>
+          )}
+        </div>
 
         {/* Right: customization */}
         <div className="detail-options">
