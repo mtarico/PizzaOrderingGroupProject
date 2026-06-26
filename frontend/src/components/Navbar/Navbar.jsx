@@ -22,6 +22,7 @@ export default function Navbar() {
           <Link to="/menu" className="nav-link">Order Now</Link>
           <Link to="/menu" className="nav-link underline">Menu</Link>
           <Link to="/#deals" className="nav-link">Deals</Link>
+          <Link to="/orders" className="nav-link">Previous Orders</Link>
         </div>
 
         <div className="navbar-center">

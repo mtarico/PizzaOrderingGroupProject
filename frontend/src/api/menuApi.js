@@ -77,3 +77,14 @@ export async function deleteMenuItem(id, token) {
     },
   });
 }
+
+export async function fetchOrders() {
+  return request("/orders");
+}
+
+export async function createOrder(order) {
+  return request("/orders", {
+    method: "POST",
+    body: JSON.stringify(order),
+  });
+}

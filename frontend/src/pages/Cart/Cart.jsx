@@ -89,9 +89,9 @@ export default function Cart() {
           </div>
           <button
             className="btn-primary"
-            onClick={() => navigate("/confirmation")}
+            onClick={() => navigate("/checkout")}
           >
-            Place Order →
+            Checkout →
           </button>
           <button className="btn-secondary" onClick={() => navigate("/menu")}>
             Add More Items

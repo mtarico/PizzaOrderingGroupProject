@@ -15,3 +15,25 @@ model MenuItem {
   price       Float
   image       String?
 }
+
+model Order {
+  id        Int         @id @default(autoincrement())
+  createdAt DateTime    @default(now())
+  name      String
+  address   String
+  subtotal  Float
+  tax       Float
+  discount  Float
+  total     Float
+  items     OrderItem[]
+}
+
+model OrderItem {
+  id      Int    @id @default(autoincrement())
+  orderId Int
+  order   Order  @relation(fields: [orderId], references: [id])
+  name    String
+  options String?
+  price   Float
+  qty     Int
+}
