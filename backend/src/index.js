@@ -10,7 +10,17 @@ const ordersRouter = require("./routes/orders");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(
+	cors({
+		origin(origin, callback) {
+			if (!origin || /^http:\/\/localhost:\d+$/.test(origin)) {
+				callback(null, true);
+				return;
+			}
+			callback(new Error("Not allowed by CORS"));
+		},
+	})
+);
 app.use(express.json());
 
 app.get("/health", (_, res) => res.json({ status: "ok" }));

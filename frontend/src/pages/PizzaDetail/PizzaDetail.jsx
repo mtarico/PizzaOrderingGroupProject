@@ -26,7 +26,8 @@ export default function PizzaDetail() {
   const [size, setSize] = useState("medium");
   const [sauce, setSauce] = useState("Marinara");
   const [crust, setCrust] = useState("Thin");
-  const [selectedOption, setSelectedOption] = useState("");
+  const [sodaFlavor, setSodaFlavor] = useState(DRINK_FLAVORS[0]);
+  const [wingSauce, setWingSauce] = useState(WING_SAUCES[0]);
 
   useEffect(() => {
     async function loadItem() {
@@ -41,18 +42,6 @@ export default function PizzaDetail() {
 
     loadItem();
   }, [id]);
-
-  useEffect(() => {
-    if (!item) return;
-
-    if (item.name.includes("Soda")) {
-      setSelectedOption(DRINK_FLAVORS[0]);
-    } else if (item.name.includes("Chicken Wings")) {
-      setSelectedOption(WING_SAUCES[0]);
-    } else {
-      setSelectedOption("");
-    }
-  }, [item]);
 
   if (loading) {
     return <div className="detail-not-found"><p>Loading item...</p></div>;
@@ -76,13 +65,17 @@ export default function PizzaDetail() {
   function handleAddToCart() {
     const cartKey = isPizza
       ? `${item.id}-${size}-${sauce}-${crust}`
-      : `${item.id}-${selectedOption}`;
+      : isSoda
+        ? `${item.id}-flavor-${sodaFlavor}`
+        : isWings
+          ? `${item.id}-sauce-${wingSauce}`
+          : String(item.id);
     const optionLabel = isPizza
       ? `${size[0].toUpperCase() + size.slice(1)}, ${sauce}, ${crust}`
       : isSoda
-        ? `Flavor: ${selectedOption}`
+        ? `Flavor: ${sodaFlavor}`
         : isWings
-          ? `Sauce: ${selectedOption}`
+          ? `Sauce: ${wingSauce}`
           : "";
 
     for (let i = 0; i < qty; i++) {
@@ -192,8 +185,8 @@ export default function PizzaDetail() {
                       type="radio"
                       name="drink-flavor"
                       value={flavor}
-                      checked={selectedOption === flavor}
-                      onChange={() => setSelectedOption(flavor)}
+                      checked={sodaFlavor === flavor}
+                      onChange={() => setSodaFlavor(flavor)}
                     />
                     {flavor}
                   </label>
@@ -212,8 +205,8 @@ export default function PizzaDetail() {
                       type="radio"
                       name="wing-sauce"
                       value={sauceOption}
-                      checked={selectedOption === sauceOption}
-                      onChange={() => setSelectedOption(sauceOption)}
+                      checked={wingSauce === sauceOption}
+                      onChange={() => setWingSauce(sauceOption)}
                     />
                     {sauceOption}
                   </label>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { createMenuItem, deleteMenuItem, fetchMenuItems, loginAdmin, updateMenuItem } from "../../api/menuApi";
 import { categories } from "../../data/menuData";
 import "./Admin.css";
@@ -21,7 +20,6 @@ export default function Admin() {
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!token) return;

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
 import { categories } from "../../data/menuData";
 import { fetchMenuItems } from "../../api/menuApi";
 import "./Menu.css";
@@ -12,6 +13,7 @@ export default function Menu() {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const { addItem } = useCart();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,8 +40,13 @@ export default function Menu() {
     setSearchParams({ category: id });
   }
 
-  function handleItemClick(item) {
-    navigate(`/menu/${item.id}`);
+  function handleItemClick(item, shouldCustomize) {
+    if (shouldCustomize) {
+      navigate(`/menu/${item.id}`);
+      return;
+    }
+
+    addItem({ ...item, cartKey: String(item.id), options: null });
   }
 
   return (
@@ -84,7 +91,7 @@ export default function Menu() {
               <span className="menu-item-price">${Number(item.price).toFixed(2)}</span>
               <button
                 className={`menu-item-action ${shouldCustomize ? "btn-customize" : "btn-add"}`}
-                onClick={() => handleItemClick(item)}
+                onClick={() => handleItemClick(item, shouldCustomize)}
               >
                 {shouldCustomize ? "Customize →" : "+ Add"}
               </button>
