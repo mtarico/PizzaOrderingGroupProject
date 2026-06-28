@@ -12,6 +12,8 @@ const SIZES = [
 ];
 const SAUCES = ["Marinara", "Alfredo"];
 const CRUSTS = ["Thin", "Hand Tossed"];
+const DRINK_FLAVORS = ["Coke", "Diet Coke", "Sprite", "Root Beer"];
+const WING_SAUCES = ["Buffalo", "BBQ"];
 
 export default function PizzaDetail() {
   const { id } = useParams();
@@ -24,6 +26,7 @@ export default function PizzaDetail() {
   const [size, setSize] = useState("medium");
   const [sauce, setSauce] = useState("Marinara");
   const [crust, setCrust] = useState("Thin");
+  const [selectedOption, setSelectedOption] = useState("");
 
   useEffect(() => {
     async function loadItem() {
@@ -39,6 +42,18 @@ export default function PizzaDetail() {
     loadItem();
   }, [id]);
 
+  useEffect(() => {
+    if (!item) return;
+
+    if (item.name.includes("Soda")) {
+      setSelectedOption(DRINK_FLAVORS[0]);
+    } else if (item.name.includes("Chicken Wings")) {
+      setSelectedOption(WING_SAUCES[0]);
+    } else {
+      setSelectedOption("");
+    }
+  }, [item]);
+
   if (loading) {
     return <div className="detail-not-found"><p>Loading item...</p></div>;
   }
@@ -52,14 +67,26 @@ export default function PizzaDetail() {
     );
   }
 
-  const unitPrice = item.price + SIZE_UPCHARGE[size];
+  const isPizza = item.category === "pizza";
+  const isSoda = item.category === "drinks" && item.name.toLowerCase().includes("soda");
+  const isWings = item.category === "sides" && item.name.toLowerCase().includes("wings");
+  const unitPrice = isPizza ? item.price + SIZE_UPCHARGE[size] : item.price;
   const lineTotal = unitPrice * qty;
 
   function handleAddToCart() {
-    const cartKey = `${item.id}-${size}-${sauce}-${crust}`;
-    const optionLabel = `${size[0].toUpperCase() + size.slice(1)}, ${sauce}, ${crust}`;
+    const cartKey = isPizza
+      ? `${item.id}-${size}-${sauce}-${crust}`
+      : `${item.id}-${selectedOption}`;
+    const optionLabel = isPizza
+      ? `${size[0].toUpperCase() + size.slice(1)}, ${sauce}, ${crust}`
+      : isSoda
+        ? `Flavor: ${selectedOption}`
+        : isWings
+          ? `Sauce: ${selectedOption}`
+          : "";
+
     for (let i = 0; i < qty; i++) {
-      addItem({ ...item, price: unitPrice, cartKey, options: optionLabel });
+      addItem({ ...item, price: unitPrice, cartKey, options: optionLabel || null });
     }
     navigate("/cart");
   }
@@ -94,62 +121,106 @@ export default function PizzaDetail() {
             </div>
           </div>
 
-          <div className="option-row">
-            <label className="option-label">Size</label>
-            <div className="radio-group">
-              {SIZES.map((s) => (
-                <label key={s.value} className="radio-option">
-                  <input
-                    type="radio"
-                    name="size"
-                    value={s.value}
-                    checked={size === s.value}
-                    onChange={() => setSize(s.value)}
-                  />
-                  {s.label}
-                  {SIZE_UPCHARGE[s.value] > 0 && (
-                    <span className="upcharge"> +${SIZE_UPCHARGE[s.value]}</span>
-                  )}
-                </label>
-              ))}
-            </div>
-          </div>
+          {isPizza ? (
+            <>
+              <div className="option-row">
+                <label className="option-label">Size</label>
+                <div className="radio-group">
+                  {SIZES.map((s) => (
+                    <label key={s.value} className="radio-option">
+                      <input
+                        type="radio"
+                        name="size"
+                        value={s.value}
+                        checked={size === s.value}
+                        onChange={() => setSize(s.value)}
+                      />
+                      {s.label}
+                      {SIZE_UPCHARGE[s.value] > 0 && (
+                        <span className="upcharge"> +${SIZE_UPCHARGE[s.value]}</span>
+                      )}
+                    </label>
+                  ))}
+                </div>
+              </div>
 
-          <div className="option-row">
-            <label className="option-label">Sauce</label>
-            <div className="radio-group">
-              {SAUCES.map((s) => (
-                <label key={s} className="radio-option">
-                  <input
-                    type="radio"
-                    name="sauce"
-                    value={s}
-                    checked={sauce === s}
-                    onChange={() => setSauce(s)}
-                  />
-                  {s}
-                </label>
-              ))}
-            </div>
-          </div>
+              <div className="option-row">
+                <label className="option-label">Sauce</label>
+                <div className="radio-group">
+                  {SAUCES.map((s) => (
+                    <label key={s} className="radio-option">
+                      <input
+                        type="radio"
+                        name="sauce"
+                        value={s}
+                        checked={sauce === s}
+                        onChange={() => setSauce(s)}
+                      />
+                      {s}
+                    </label>
+                  ))}
+                </div>
+              </div>
 
-          <div className="option-row">
-            <label className="option-label">Crust</label>
-            <div className="radio-group">
-              {CRUSTS.map((c) => (
-                <label key={c} className="radio-option">
-                  <input
-                    type="radio"
-                    name="crust"
-                    value={c}
-                    checked={crust === c}
-                    onChange={() => setCrust(c)}
-                  />
-                  {c}
-                </label>
-              ))}
+              <div className="option-row">
+                <label className="option-label">Crust</label>
+                <div className="radio-group">
+                  {CRUSTS.map((c) => (
+                    <label key={c} className="radio-option">
+                      <input
+                        type="radio"
+                        name="crust"
+                        value={c}
+                        checked={crust === c}
+                        onChange={() => setCrust(c)}
+                      />
+                      {c}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </>
+          ) : null}
+
+          {isSoda ? (
+            <div className="option-row">
+              <label className="option-label">Flavor</label>
+              <div className="radio-group">
+                {DRINK_FLAVORS.map((flavor) => (
+                  <label key={flavor} className="radio-option">
+                    <input
+                      type="radio"
+                      name="drink-flavor"
+                      value={flavor}
+                      checked={selectedOption === flavor}
+                      onChange={() => setSelectedOption(flavor)}
+                    />
+                    {flavor}
+                  </label>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : null}
+
+          {isWings ? (
+            <div className="option-row">
+              <label className="option-label">Sauce</label>
+              <div className="radio-group">
+                {WING_SAUCES.map((sauceOption) => (
+                  <label key={sauceOption} className="radio-option">
+                    <input
+                      type="radio"
+                      name="wing-sauce"
+                      value={sauceOption}
+                      checked={selectedOption === sauceOption}
+                      onChange={() => setSelectedOption(sauceOption)}
+                    />
+                    {sauceOption}
+                  </label>
+                ))}
+              </div>
+            </div>
+          ) : null}
 
           <div className="detail-total">
             ${lineTotal.toFixed(2)}

@@ -27,3 +27,11 @@ export const promos = [
   { id: 2, label: "Family Bundle", description: "2 Large Pizzas + Sides + Drinks — $39.99", badge: "💰 SAVE $10" },
   { id: 3, label: "Free Delivery", description: "Free delivery on orders over $25", badge: "🚗 FREE" },
 ];
+
+export const restaurantInfo = {
+  name: "Eats-A-Pizza",
+  hours: "Open daily from 11:00 AM to 11:00 PM",
+  location: "128 Pepperoni Lane, Downtown District",
+  history:
+    "Founded in 1998, Eats-A-Pizza began as a family-owned neighborhood pizzeria and grew into a local favorite known for handcrafted dough and house-made sauces.",
+};

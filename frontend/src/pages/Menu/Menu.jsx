@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useCart } from "../../context/CartContext";
 import { categories } from "../../data/menuData";
 import { fetchMenuItems } from "../../api/menuApi";
 import "./Menu.css";
@@ -13,7 +12,6 @@ export default function Menu() {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const { addItem } = useCart();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,11 +39,7 @@ export default function Menu() {
   }
 
   function handleItemClick(item) {
-    if (item.category === "pizza") {
-      navigate(`/menu/${item.id}`);
-    } else {
-      addItem({ ...item, cartKey: String(item.id) });
-    }
+    navigate(`/menu/${item.id}`);
   }
 
   return (
@@ -69,7 +63,11 @@ export default function Menu() {
 
       <div className="menu-list">
         {!loading && !error && filtered.map((item) => {
-          const isPizza = item.category === "pizza";
+          const shouldCustomize =
+            item.category === "pizza" ||
+            (item.category === "drinks" && item.name.toLowerCase().includes("soda")) ||
+            (item.category === "sides" && item.name.toLowerCase().includes("wings"));
+
           return (
             <div key={item.id} className="menu-list-item">
               <div className="menu-item-thumb">
@@ -85,10 +83,10 @@ export default function Menu() {
               </div>
               <span className="menu-item-price">${Number(item.price).toFixed(2)}</span>
               <button
-                className={`menu-item-action ${isPizza ? "btn-customize" : "btn-add"}`}
+                className={`menu-item-action ${shouldCustomize ? "btn-customize" : "btn-add"}`}
                 onClick={() => handleItemClick(item)}
               >
-                {isPizza ? "Customize →" : "+ Add"}
+                {shouldCustomize ? "Customize →" : "+ Add"}
               </button>
             </div>
           );
