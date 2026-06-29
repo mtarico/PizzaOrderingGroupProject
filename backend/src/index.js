@@ -11,16 +11,30 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(
-	cors({
-		origin(origin, callback) {
-			if (!origin || /^http:\/\/localhost:\d+$/.test(origin)) {
-				callback(null, true);
-				return;
-			}
-			callback(new Error("Not allowed by CORS"));
-		},
-	})
+  cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin (mobile apps, curl, Postman)
+      if (!origin) return callback(null, true);
+
+      const allowedOrigins = [
+        /^http:\/\/localhost:\d+$/,
+        /^http:\/\/127\.0\.0\.1:\d+$/,
+        /^https:\/\/localhost:\d+$/,
+        /^https:\/\/127\.0\.0\.1:\d+$/,
+      ];
+
+      const isAllowed = allowedOrigins.some((pattern) => pattern.test(origin));
+
+      if (isAllowed) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
 );
+
 app.use(express.json());
 
 app.get("/health", (_, res) => res.json({ status: "ok" }));

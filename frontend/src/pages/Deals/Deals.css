@@ -1,0 +1,66 @@
+.deals-page {
+  padding: 30px;
+}
+
+.deals-heading {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.deals-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.deal-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.deal-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.deal-badge {
+  display: inline-block;
+  background: #ff4d4d;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.deal-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.deal-desc {
+  font-size: 1rem;
+  color: #555;
+}
+.deal-redeem-btn {
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.deal-redeem-btn:hover {
+  background: #e60000;
+}

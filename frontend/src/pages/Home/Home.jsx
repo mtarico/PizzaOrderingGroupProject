@@ -1,3 +1,5 @@
+import PromoBanner from "../../components/PromoBanner";
+import SlimPromoBanner from "../../components/SlimPromoBanner";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CategoryCard from "../../components/CategoryCard/CategoryCard";
@@ -51,6 +53,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+    <SlimPromoBanner />
+<PromoBanner />
 
       {/* Promotions Banner */}
       <section className="promos-section" id="deals">
