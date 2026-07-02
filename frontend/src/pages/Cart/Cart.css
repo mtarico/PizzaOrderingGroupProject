@@ -197,6 +197,10 @@
 
 /* MOBILE LAYOUT */
 @media (max-width: 768px) {
+  .cart-page {
+    padding: 1rem 0.75rem 1.5rem;
+  }
+
   .cart-layout {
     grid-template-columns: 1fr;
   }

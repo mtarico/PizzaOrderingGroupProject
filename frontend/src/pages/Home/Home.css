@@ -56,6 +56,16 @@
   background: #fff8f0;
 }
 
+.section-heading {
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  margin: 0.25rem 0 0;
+  color: #616161;
+  font-size: 0.95rem;
+}
+
 .promos-scroll {
   display: flex;
   gap: 1rem;
@@ -121,6 +131,40 @@
   background: #b71c1c;
 }
 
+.restaurant-info-card {
+  margin-top: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  background: #fff;
+  border: 1px solid #ffe0b2;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.restaurant-info-title {
+  margin: 0 0 0.75rem;
+  color: #d32f2f;
+  font-size: 1.1rem;
+}
+
+.restaurant-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.restaurant-info-grid h4 {
+  margin: 0 0 0.35rem;
+  color: #212121;
+  font-size: 0.95rem;
+}
+
+.restaurant-info-grid p {
+  margin: 0;
+  color: #616161;
+  line-height: 1.5;
+  font-size: 0.9rem;
+}
+
 /* Browse */
 .browse-section {
   padding: 2rem;
@@ -140,7 +184,42 @@
 }
 
 @media (max-width: 600px) {
-  .hero-title { font-size: 2rem; }
-  .toggle-btn { padding: 0.6rem 1.5rem; font-size: 0.95rem; }
-  .category-grid { justify-content: center; }
+  .hero {
+    padding: 2rem 1rem;
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+    line-height: 1.2;
+    letter-spacing: 1px;
+  }
+
+  .order-type-toggle {
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .toggle-btn {
+    padding: 0.7rem 1.25rem;
+    font-size: 0.95rem;
+    width: 100%;
+    max-width: 220px;
+  }
+
+  .promos-section,
+  .browse-section {
+    padding: 1.25rem 0.5rem;
+  }
+
+  .promo-card {
+    min-width: 82vw;
+  }
+
+  .restaurant-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .category-grid {
+    justify-content: center;
+  }
 }
