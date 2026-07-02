@@ -6,11 +6,20 @@ import "./Cart.css";
 const TAX_RATE = 0.08;
 
 export default function Cart() {
-  const { cart, increment, decrement, subtotal, totalItems, discount, setDiscount } = useCart();
+  const { 
+    cart, 
+    increment, 
+    decrement, 
+    subtotal, 
+    totalItems, 
+    manualDiscount, 
+    setManualDiscount 
+  } = useCart();
+
   const navigate = useNavigate();
 
   const tax = subtotal * TAX_RATE;
-  const discountAmount = Math.min(discount, subtotal);
+  const discountAmount = Math.min(manualDiscount, subtotal);
   const total = subtotal + tax - discountAmount;
 
   if (totalItems === 0) {
@@ -76,9 +85,9 @@ export default function Cart() {
                 type="number"
                 min="0"
                 step="0.01"
-                value={discount || ""}
+                value={manualDiscount}
                 placeholder="0.00"
-                onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)}
+                onChange={(e) => setManualDiscount(Number(e.target.value))}
                 className="discount-input"
               />
             </div>
