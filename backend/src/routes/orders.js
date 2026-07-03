@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
 
 // POST /orders
 router.post("/", async (req, res) => {
-  const { name, address, subtotal, tax, discount, total, items } = req.body || {};
+  const { name, address, subtotal, tax, discount, manualDiscount, promoAmount, total, items } = req.body || {};
 
   if (!name || !address || !Array.isArray(items) || items.length === 0) {
     return res.status(400).json({ error: "Missing required fields" });
@@ -28,7 +28,8 @@ router.post("/", async (req, res) => {
 
   const parsedSubtotal = Number(subtotal);
   const parsedTax = Number(tax);
-  const parsedDiscount = Number(discount);
+  // Accept either the old `discount` field or the new split fields from CartContext
+  const parsedDiscount = Number(discount ?? (Number(manualDiscount || 0) + Number(promoAmount || 0)));
   const parsedTotal = Number(total);
 
   if (![parsedSubtotal, parsedTax, parsedDiscount, parsedTotal].every(Number.isFinite)) {
