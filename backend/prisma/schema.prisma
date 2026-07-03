@@ -37,3 +37,13 @@ model OrderItem {
   price   Float
   qty     Int
 }
+
+model Promo {
+  id            Int     @id @default(autoincrement())
+  label         String
+  description   String
+  badge         String
+  discountType  String
+  discountValue Float   @default(0)
+  active        Boolean @default(true)
+}

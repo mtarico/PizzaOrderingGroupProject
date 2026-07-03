@@ -124,6 +124,31 @@
   font-size: 0.9rem;
 }
 
+.admin-section {
+  margin-bottom: 2.5rem;
+}
+
+.admin-section-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #212121;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.admin-item-inactive {
+  opacity: 0.55;
+}
+
+.admin-promo-meta {
+  font-size: 0.85rem;
+  color: #757575;
+}
+
+.status-active { color: #2e7d32; font-weight: 600; }
+.status-inactive { color: #c62828; font-weight: 600; }
+
 @media (max-width: 700px) {
   .admin-page {
     padding: 1.25rem 0.75rem 2rem;

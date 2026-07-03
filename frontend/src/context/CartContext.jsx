@@ -82,21 +82,14 @@ export function CartProvider({ children }) {
   let promoAmount = 0;
 
   if (promoDiscount) {
-    if (promoDiscount.id === 1) {
+    if (promoDiscount.discountType === "buy2get1") {
       const pizzas = cart.filter((i) => i.category === "pizza");
       if (pizzas.length >= 3) {
-        const cheapestPizza = Math.min(
-          ...pizzas.map((p) => Number(p.price))
-        );
-        promoAmount = cheapestPizza;
+        promoAmount = Math.min(...pizzas.map((p) => Number(p.price)));
       }
-    }
-
-    if (promoDiscount.id === 2) {
-      promoAmount = 10;
-    }
-
-    if (promoDiscount.id === 3) {
+    } else if (promoDiscount.discountType === "flat") {
+      promoAmount = Number(promoDiscount.discountValue) || 0;
+    } else if (promoDiscount.discountType === "freeDelivery") {
       promoAmount = deliveryFee;
     }
   }

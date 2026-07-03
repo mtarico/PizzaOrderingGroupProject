@@ -1,9 +1,10 @@
 import PromoBanner from "../../components/PromoBanner";
 import SlimPromoBanner from "../../components/SlimPromoBanner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CategoryCard from "../../components/CategoryCard/CategoryCard";
-import { categories, promos, restaurantInfo } from "../../data/menuData";
+import { categories, restaurantInfo } from "../../data/menuData";
+import { fetchPromos } from "../../api/menuApi";
 import "./Home.css";
 
 const dailySpecials = {
@@ -18,14 +19,19 @@ const dailySpecials = {
 
 export default function Home() {
   const [orderType, setOrderType] = useState("delivery");
+  const [promos, setPromos] = useState([]);
   const navigate = useNavigate();
 
   const today = new Date();
   const dayName = today.toLocaleDateString("en-US", { weekday: "long" });
   const activeSpecial = dailySpecials[dayName] || dailySpecials.Tuesday;
 
-  const featuredPromos = promos.map((promo) =>
-    promo.id === 1
+  useEffect(() => {
+    fetchPromos().then(setPromos).catch(() => {});
+  }, []);
+
+  const featuredPromos = promos.map((promo, i) =>
+    i === 0
       ? { ...promo, label: activeSpecial.label, description: activeSpecial.description, badge: activeSpecial.badge }
       : promo
   );

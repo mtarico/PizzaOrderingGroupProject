@@ -64,3 +64,20 @@
 .deal-redeem-btn:hover {
   background: #e60000;
 }
+
+.deal-card-active {
+  border: 2px solid #a5d6a7;
+  box-shadow: 0 0 0 3px #e8f5e9;
+}
+
+.deal-redeemed {
+  background: #2e7d32 !important;
+}
+.deal-redeemed:hover { background: #1b5e20 !important; }
+
+.deals-status {
+  text-align: center;
+  padding: 3rem;
+  color: #757575;
+}
+.deals-status.error { color: #d32f2f; }

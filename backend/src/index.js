@@ -6,6 +6,7 @@ const cors = require("cors");
 const menuRouter = require("./routes/menu");
 const billingRouter = require("./routes/billing");
 const ordersRouter = require("./routes/orders");
+const promosRouter = require("./routes/promos");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -41,5 +42,6 @@ app.get("/health", (_, res) => res.json({ status: "ok" }));
 app.use("/menu", menuRouter);
 app.use("/", billingRouter);
 app.use("/orders", ordersRouter);
+app.use("/promos", promosRouter);
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

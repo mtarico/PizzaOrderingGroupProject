@@ -82,6 +82,26 @@ export async function fetchOrders() {
   return request("/orders");
 }
 
+export async function fetchPromos() {
+  return request("/promos");
+}
+
+export async function fetchAllPromos(token) {
+  return request("/promos/all", { headers: { Authorization: `Bearer ${token}` } });
+}
+
+export async function createPromo(promo, token) {
+  return request("/promos", { method: "POST", headers: { Authorization: `Bearer ${token}` }, body: JSON.stringify(promo) });
+}
+
+export async function updatePromo(id, promo, token) {
+  return request(`/promos/${id}`, { method: "PUT", headers: { Authorization: `Bearer ${token}` }, body: JSON.stringify(promo) });
+}
+
+export async function deletePromo(id, token) {
+  return request(`/promos/${id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+}
+
 export async function createOrder(order) {
   return request("/orders", {
     method: "POST",
