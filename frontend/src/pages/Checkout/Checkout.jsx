@@ -11,7 +11,6 @@ export default function Checkout() {
     tax,
     deliveryFee,
     total,
-    manualDiscount,
     promoDiscount,
     promoAmount,
     clearCart
@@ -75,7 +74,6 @@ export default function Checkout() {
         subtotal,
         tax,
         deliveryFee,
-        manualDiscount,
         promoDiscount: promoDiscount ? promoDiscount.label : null,
         promoAmount,
         total,
@@ -118,9 +116,7 @@ export default function Checkout() {
                 placeholder="Jane Smith"
                 className={errors.name ? "input-error" : ""}
               />
-              {errors.name && (
-                <span className="field-error">{errors.name}</span>
-              )}
+              {errors.name && <span className="field-error">{errors.name}</span>}
             </label>
 
             <label className="checkout-label">
@@ -131,32 +127,24 @@ export default function Checkout() {
                 placeholder="123 Main St, City, State 12345"
                 className={errors.address ? "input-error" : ""}
               />
-              {errors.address && (
-                <span className="field-error">{errors.address}</span>
-              )}
+              {errors.address && <span className="field-error">{errors.address}</span>}
             </label>
           </fieldset>
 
           <fieldset className="checkout-fieldset">
             <legend>Payment</legend>
-            <p className="payment-notice">
-              🔒 Demo only — no real charge will be made.
-            </p>
+            <p className="payment-notice">🔒 Demo only — no real charge will be made.</p>
 
             <label className="checkout-label">
               Card Number
               <input
                 value={form.cardNumber}
-                onChange={(e) =>
-                  setField("cardNumber", formatCardNumber(e.target.value))
-                }
+                onChange={(e) => setField("cardNumber", formatCardNumber(e.target.value))}
                 placeholder="1234 5678 9012 3456"
                 inputMode="numeric"
                 className={errors.cardNumber ? "input-error" : ""}
               />
-              {errors.cardNumber && (
-                <span className="field-error">{errors.cardNumber}</span>
-              )}
+              {errors.cardNumber && <span className="field-error">{errors.cardNumber}</span>}
             </label>
 
             <div className="checkout-row">
@@ -164,47 +152,32 @@ export default function Checkout() {
                 Expiry
                 <input
                   value={form.expiry}
-                  onChange={(e) =>
-                    setField("expiry", formatExpiry(e.target.value))
-                  }
+                  onChange={(e) => setField("expiry", formatExpiry(e.target.value))}
                   placeholder="MM/YY"
                   inputMode="numeric"
                   className={errors.expiry ? "input-error" : ""}
                 />
-                {errors.expiry && (
-                  <span className="field-error">{errors.expiry}</span>
-                )}
+                {errors.expiry && <span className="field-error">{errors.expiry}</span>}
               </label>
 
               <label className="checkout-label">
                 CVV
                 <input
                   value={form.cvv}
-                  onChange={(e) =>
-                    setField(
-                      "cvv",
-                      e.target.value.replace(/\D/g, "").slice(0, 4)
-                    )
-                  }
+                  onChange={(e) => setField("cvv", e.target.value.replace(/\D/g, "").slice(0, 4))}
                   placeholder="123"
                   inputMode="numeric"
                   className={errors.cvv ? "input-error" : ""}
                 />
-                {errors.cvv && (
-                  <span className="field-error">{errors.cvv}</span>
-                )}
+                {errors.cvv && <span className="field-error">{errors.cvv}</span>}
               </label>
             </div>
           </fieldset>
 
-          {errors.submit && (
-            <p className="submit-error">{errors.submit}</p>
-          )}
+          {errors.submit && <p className="submit-error">{errors.submit}</p>}
 
           <button className="btn-place-order" type="submit" disabled={submitting}>
-            {submitting
-              ? "Placing Order..."
-              : `Place Order · $${total.toFixed(2)}`}
+            {submitting ? "Placing Order..." : `Place Order · $${total.toFixed(2)}`}
           </button>
         </form>
 
@@ -216,12 +189,7 @@ export default function Checkout() {
               <div key={item.cartKey} className="summary-item">
                 <span>
                   {item.name} × {item.qty}
-                  {item.options && (
-                    <span className="summary-options">
-                      {" "}
-                      ({item.options})
-                    </span>
-                  )}
+                  {item.options && <span className="summary-options"> ({item.options})</span>}
                 </span>
                 <span>${(item.price * item.qty).toFixed(2)}</span>
               </div>
@@ -249,13 +217,6 @@ export default function Checkout() {
             <div className="summary-row">
               <span>{promoDiscount.label}</span>
               <span>−${promoAmount.toFixed(2)}</span>
-            </div>
-          )}
-
-          {manualDiscount > 0 && (
-            <div className="summary-row">
-              <span>Manual Discount</span>
-              <span>−${manualDiscount.toFixed(2)}</span>
             </div>
           )}
 

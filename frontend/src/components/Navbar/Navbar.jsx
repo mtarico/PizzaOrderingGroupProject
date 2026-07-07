@@ -10,6 +10,11 @@ export default function Navbar() {
   return (
     <nav className="navbar">
 
+      {/* TOP LOGO — NOT A LINK */}
+      <div className="navbar-top-logo">
+        <span className="logo">🍕 Eats-A-Pizza</span>
+      </div>
+
       {/* MOBILE MENU BUTTON */}
       <button className="menu-toggle" onClick={() => setOpen(!open)}>
         ☰
@@ -19,19 +24,34 @@ export default function Navbar() {
       <div className={`navbar-content ${open ? "open" : ""}`}>
 
         <div className="navbar-left">
-          <Link to="/menu" className="nav-link">Order Now</Link>
-          <Link to="/menu" className="nav-link underline">Menu</Link>
-          <Link to="/deals" className="nav-link">Deals</Link>
-          <Link to="/orders" className="nav-link">Previous Orders</Link>
-        </div>
+          <Link to="/" className="nav-link" onClick={() => setOpen(false)}>
+          Home
+          </Link>
 
-        <div className="navbar-center">
-          <Link to="/" className="logo">🍕 Eats-A-Pizza</Link>
+          
+          <Link to="/menu" className="nav-link" onClick={() => setOpen(false)}>
+            Order Now
+          </Link>
+
+          <Link to="/menu" className="nav-link underline" onClick={() => setOpen(false)}>
+            Menu
+          </Link>
+
+          <Link to="/deals" className="nav-link" onClick={() => setOpen(false)}>
+            Deals
+          </Link>
+
+          <Link to="/orders" className="nav-link" onClick={() => setOpen(false)}>
+            Previous Orders
+          </Link>
         </div>
 
         <div className="navbar-right">
-          <Link to="/admin" className="btn-signin">Admin</Link>
-          <Link to="/cart" className="cart-icon">
+          <Link to="/admin" className="btn-signin" onClick={() => setOpen(false)}>
+            Admin
+          </Link>
+
+          <Link to="/cart" className="cart-icon" onClick={() => setOpen(false)}>
             🛒
             {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
           </Link>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useState } from "react";
+import { createContext, useContext, useReducer, useState, useEffect } from "react";
 
 const CartContext = createContext(null);
 
@@ -42,11 +42,6 @@ function cartReducer(state, action) {
 
 export function CartProvider({ children }) {
   const [cart, dispatch] = useReducer(cartReducer, []);
-
-  // Manual discount (always a number)
-  const [manualDiscount, setManualDiscount] = useState(0);
-
-  // Promo discount
   const [promoDiscount, setPromoDiscount] = useState(null);
 
   const addItem = (item) =>
@@ -94,8 +89,53 @@ export function CartProvider({ children }) {
     }
   }
 
-  const total =
-    subtotal + tax + deliveryFee - promoAmount - Number(manualDiscount);
+  // AUTO-APPLY DEALS — NO STACKING
+  useEffect(() => {
+    if (cart.length === 0) {
+      setPromoDiscount(null);
+      return;
+    }
+
+    const pizzas = cart.filter((i) => i.category === "pizza");
+
+    // Priority 1: Buy 2 Get 1 Free
+    if (pizzas.length >= 3) {
+      setPromoDiscount({
+        id: "auto-buy2get1",
+        label: "Buy 2 Get 1 Free",
+        discountType: "buy2get1",
+        discountValue: null
+      });
+      return;
+    }
+
+    // Priority 2: Free Delivery
+    if (subtotal < 25) {
+      setPromoDiscount({
+        id: "auto-freeDelivery",
+        label: "Free Delivery",
+        discountType: "freeDelivery",
+        discountValue: null
+      });
+      return;
+    }
+
+    // Priority 3: Flat $10 off
+    if (subtotal >= 50) {
+      setPromoDiscount({
+        id: "auto-flat10",
+        label: "$10 Off Orders Over $50",
+        discountType: "flat",
+        discountValue: 10
+      });
+      return;
+    }
+
+    // No deal applies
+    setPromoDiscount(null);
+  }, [cart, subtotal]);
+
+  const total = subtotal + tax + deliveryFee - promoAmount;
 
   return (
     <CartContext.Provider
@@ -110,8 +150,6 @@ export function CartProvider({ children }) {
         tax,
         deliveryFee,
         total,
-        manualDiscount,
-        setManualDiscount,
         promoDiscount,
         applyDiscount,
         promoAmount,

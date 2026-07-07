@@ -26,14 +26,30 @@ export default function Deals() {
       <div className="deals-list">
         {promos.map((promo) => {
           const isActive = promoDiscount?.id === promo.id;
+
           return (
-            <div key={promo.id} className={`deal-card ${isActive ? "deal-card-active" : ""}`}>
+            <div
+              key={promo.id}
+              className={`deal-card ${isActive ? "deal-card-active" : ""}`}
+            >
               <span className="deal-badge">{promo.badge}</span>
               <h3 className="deal-title">{promo.label}</h3>
               <p className="deal-desc">{promo.description}</p>
+
               <button
                 className={`deal-redeem-btn ${isActive ? "deal-redeemed" : ""}`}
-                onClick={() => applyDiscount(isActive ? null : promo)}
+                onClick={() =>
+                  applyDiscount(
+                    isActive
+                      ? null
+                      : {
+                          id: promo.id,
+                          label: promo.label,
+                          discountType: promo.discountType,
+                          discountValue: promo.discountValue
+                        }
+                  )
+                }
               >
                 {isActive ? "✓ Applied" : "Redeem Deal"}
               </button>
@@ -44,3 +60,4 @@ export default function Deals() {
     </div>
   );
 }
+

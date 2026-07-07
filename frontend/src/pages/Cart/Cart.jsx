@@ -3,24 +3,20 @@ import { useCart } from "../../context/CartContext";
 import { categories } from "../../data/menuData";
 import "./Cart.css";
 
-const TAX_RATE = 0.08;
-
 export default function Cart() {
   const { 
     cart, 
     increment, 
     decrement, 
     subtotal, 
-    totalItems, 
-    manualDiscount, 
-    setManualDiscount 
+    totalItems,
+    tax,
+    deliveryFee,
+    promoAmount,
+    total
   } = useCart();
 
   const navigate = useNavigate();
-
-  const tax = subtotal * TAX_RATE;
-  const discountAmount = Math.min(manualDiscount, subtotal);
-  const total = subtotal + tax - discountAmount;
 
   if (totalItems === 0) {
     return (
@@ -73,35 +69,36 @@ export default function Cart() {
             <span>Subtotal</span>
             <span>${subtotal.toFixed(2)}</span>
           </div>
+
           <div className="summary-row">
             <span>Tax (8%)</span>
             <span>${tax.toFixed(2)}</span>
           </div>
-          <div className="summary-row discount-row">
-            <span>Discount</span>
-            <div className="discount-input-wrap">
-              <span>−$</span>
-              <input
-                type="number"
-                min="0"
-                step="0.01"
-                value={manualDiscount}
-                placeholder="0.00"
-                onChange={(e) => setManualDiscount(Number(e.target.value))}
-                className="discount-input"
-              />
-            </div>
+
+          <div className="summary-row">
+            <span>Delivery Fee</span>
+            <span>${deliveryFee.toFixed(2)}</span>
           </div>
+
+          {promoAmount > 0 && (
+            <div className="summary-row discount-row">
+              <span>Deal Applied</span>
+              <span>−${promoAmount.toFixed(2)}</span>
+            </div>
+          )}
+
           <div className="summary-row total-row">
             <span>Total</span>
             <span>${total.toFixed(2)}</span>
           </div>
+
           <button
             className="btn-primary"
             onClick={() => navigate("/checkout")}
           >
             Checkout →
           </button>
+
           <button className="btn-secondary" onClick={() => navigate("/menu")}>
             Add More Items
           </button>
