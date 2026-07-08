@@ -46,4 +46,5 @@ model Promo {
   discountType  String
   discountValue Float   @default(0)
   active        Boolean @default(true)
+  dayOfWeek     String?
 }

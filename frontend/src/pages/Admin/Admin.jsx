@@ -7,7 +7,9 @@ import { categories } from "../../data/menuData";
 import "./Admin.css";
 
 const emptyMenuForm = { category: "pizza", name: "", description: "", price: "", image: "" };
-const emptyPromoForm = { label: "", description: "", badge: "", discountType: "flat", discountValue: "" };
+const emptyPromoForm = { label: "", description: "", badge: "", discountType: "flat", discountValue: "", dayOfWeek: "" };
+
+const DAYS_OF_WEEK = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 const DISCOUNT_TYPES = [
   { value: "flat", label: "Flat $ Off" },
@@ -110,7 +112,7 @@ export default function Admin() {
     e.preventDefault();
     setIsSavingPromo(true);
     try {
-      const payload = { ...promoForm, discountValue: Number(promoForm.discountValue) || 0 };
+      const payload = { ...promoForm, discountValue: Number(promoForm.discountValue) || 0, dayOfWeek: promoForm.dayOfWeek || null };
       if (editingPromoId) {
         await updatePromo(editingPromoId, payload, token);
       } else {
@@ -146,7 +148,7 @@ export default function Admin() {
 
   function handlePromoEdit(promo) {
     setEditingPromoId(promo.id);
-    setPromoForm({ label: promo.label, description: promo.description, badge: promo.badge, discountType: promo.discountType, discountValue: promo.discountValue });
+    setPromoForm({ label: promo.label, description: promo.description, badge: promo.badge, discountType: promo.discountType, discountValue: promo.discountValue, dayOfWeek: promo.dayOfWeek || "" });
   }
 
   function handleLogout() {
@@ -243,6 +245,10 @@ export default function Admin() {
               required
             />
           )}
+          <select value={promoForm.dayOfWeek} onChange={(e) => setPromoForm({ ...promoForm, dayOfWeek: e.target.value })}>
+            <option value="">Every Day</option>
+            {DAYS_OF_WEEK.map((d) => <option key={d} value={d}>{d}</option>)}
+          </select>
           <button type="submit" disabled={isSavingPromo}>{isSavingPromo ? "Saving..." : editingPromoId ? "Save Changes" : "Add Promo"}</button>
           {editingPromoId && <button type="button" className="admin-cancel" onClick={() => { setEditingPromoId(null); setPromoForm(emptyPromoForm); }}>Cancel</button>}
         </form>
@@ -257,6 +263,7 @@ export default function Admin() {
                   {DISCOUNT_TYPES.find((t) => t.value === promo.discountType)?.label}
                   {promo.discountType === "flat" && ` — $${Number(promo.discountValue).toFixed(2)} off`}
                   {promo.discountType === "bundle" && ` — $${Number(promo.discountValue).toFixed(2)} total`}
+                  {" • "}{promo.dayOfWeek ?? "Every Day"}
                   {" • "}
                   <span className={promo.active ? "status-active" : "status-inactive"}>
                     {promo.active ? "Active" : "Inactive"}

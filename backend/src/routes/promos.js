@@ -16,11 +16,15 @@ function authMiddleware(req, res, next) {
   next();
 }
 
-// GET /promos — public, active promos only
+// GET /promos — public, active promos for today (or every day)
 router.get("/", async (req, res) => {
   try {
+    const today = new Date().toLocaleDateString("en-US", { weekday: "long" });
     const promos = await prisma.promo.findMany({
-      where: { active: true },
+      where: {
+        active: true,
+        OR: [{ dayOfWeek: null }, { dayOfWeek: today }],
+      },
       orderBy: { id: "asc" },
     });
     res.json(promos);
@@ -29,7 +33,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET /promos/all — admin, includes inactive
+// GET /promos/all — admin, includes inactive and all days
 router.get("/all", authMiddleware, async (req, res) => {
   try {
     const promos = await prisma.promo.findMany({ orderBy: { id: "asc" } });
@@ -41,13 +45,18 @@ router.get("/all", authMiddleware, async (req, res) => {
 
 // POST /promos
 router.post("/", authMiddleware, async (req, res) => {
-  const { label, description, badge, discountType, discountValue } = req.body || {};
+  const { label, description, badge, discountType, discountValue, dayOfWeek } = req.body || {};
   if (!label || !description || !badge || !discountType) {
     return res.status(400).json({ error: "Missing required fields" });
   }
   try {
     const promo = await prisma.promo.create({
-      data: { label, description, badge, discountType, discountValue: Number(discountValue) || 0, active: true },
+      data: {
+        label, description, badge, discountType,
+        discountValue: Number(discountValue) || 0,
+        active: true,
+        dayOfWeek: dayOfWeek || null,
+      },
     });
     res.status(201).json(promo);
   } catch (err) {
@@ -57,11 +66,16 @@ router.post("/", authMiddleware, async (req, res) => {
 
 // PUT /promos/:id
 router.put("/:id", authMiddleware, async (req, res) => {
-  const { label, description, badge, discountType, discountValue, active } = req.body || {};
+  const { label, description, badge, discountType, discountValue, active, dayOfWeek } = req.body || {};
   try {
     const promo = await prisma.promo.update({
       where: { id: Number(req.params.id) },
-      data: { label, description, badge, discountType, discountValue: Number(discountValue) || 0, active: active ?? true },
+      data: {
+        label, description, badge, discountType,
+        discountValue: Number(discountValue) || 0,
+        active: active ?? true,
+        dayOfWeek: dayOfWeek || null,
+      },
     });
     res.json(promo);
   } catch (err) {

@@ -7,34 +7,16 @@ import { categories, restaurantInfo } from "../../data/menuData";
 import { fetchPromos } from "../../api/menuApi";
 import "./Home.css";
 
-const dailySpecials = {
-  Sunday: { label: "Sunday Slice", description: "Large pizza + garlic knots for $19.99", badge: "🍕 FAMILY NIGHT" },
-  Monday: { label: "Monday Melt", description: "Any 2-topping pizza for $14.99", badge: "💸 WEEKSTARTER" },
-  Tuesday: { label: "Tuesday Special", description: "Buy 2 pizzas, get 1 free!", badge: "🔥 HOT DEAL" },
-  Wednesday: { label: "Wednesday Crunch", description: "Half-price wings with any large pizza", badge: "🧄 WING DEAL" },
-  Thursday: { label: "Thursday Throwback", description: "$5 off pasta and pizza combos", badge: "✨ COMBO DEAL" },
-  Friday: { label: "Friday Feast", description: "Free garlic bread with orders over $30", badge: "🎉 WEEKEND START" },
-  Saturday: { label: "Saturday Slice", description: "2-liter soda included with any family pizza", badge: "🥤 FAMILY DEAL" },
-};
-
 export default function Home() {
   const [orderType, setOrderType] = useState("delivery");
   const [promos, setPromos] = useState([]);
   const navigate = useNavigate();
 
-  const today = new Date();
-  const dayName = today.toLocaleDateString("en-US", { weekday: "long" });
-  const activeSpecial = dailySpecials[dayName] || dailySpecials.Tuesday;
+  const dayName = new Date().toLocaleDateString("en-US", { weekday: "long" });
 
   useEffect(() => {
     fetchPromos().then(setPromos).catch(() => {});
   }, []);
-
-  const featuredPromos = promos.map((promo, i) =>
-    i === 0
-      ? { ...promo, label: activeSpecial.label, description: activeSpecial.description, badge: activeSpecial.badge }
-      : promo
-  );
 
   return (
     <div className="home">
@@ -70,7 +52,7 @@ export default function Home() {
         </div>
 
         <div className="promos-scroll">
-          {featuredPromos.map((promo) => (
+          {promos.map((promo) => (
             <div key={promo.id} className="promo-card">
               <span className="promo-badge">{promo.badge}</span>
               <h3 className="promo-label">{promo.label}</h3>

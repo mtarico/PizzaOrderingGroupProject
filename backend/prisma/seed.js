@@ -27,9 +27,15 @@ async function main() {
   await prisma.promo.deleteMany();
   await prisma.promo.createMany({
     data: [
-      { label: "Tuesday Special", description: "Buy 2 pizzas, get 1 free!", badge: "🔥 HOT DEAL", discountType: "buy2get1", discountValue: 0, active: true },
-      { label: "Family Bundle", description: "2 Large Pizzas + Sides + Drinks — $39.99", badge: "💰 BUNDLE DEAL", discountType: "bundle", discountValue: 39.99, active: true },
-      { label: "Free Delivery", description: "Free delivery on orders over $25", badge: "🚗 FREE", discountType: "freeDelivery", discountValue: 0, active: true },
+      // Every-day deals
+      { label: "Family Bundle",       description: "2 pizzas + a side + a drink for $39.99",      badge: "💰 BUNDLE DEAL",    discountType: "bundle",      discountValue: 39.99, active: true, dayOfWeek: null },
+      { label: "Free Delivery",       description: "Free delivery on orders over $25",              badge: "🚗 FREE DELIVERY", discountType: "freeDelivery", discountValue: 0,     active: true, dayOfWeek: null },
+      // Day-specific deals
+      { label: "Monday Melt",         description: "Start the week right — $3 off any order",       badge: "💸 WEEKSTARTER",   discountType: "flat",        discountValue: 3,     active: true, dayOfWeek: "Monday"    },
+      { label: "Tuesday Special",     description: "Buy 2 pizzas, get 1 free!",                     badge: "🔥 HOT DEAL",      discountType: "buy2get1",    discountValue: 0,     active: true, dayOfWeek: "Tuesday"   },
+      { label: "Wednesday Crunch",    description: "Hump day reward — $4 off your order",           badge: "🍗 WING DEAL",     discountType: "flat",        discountValue: 4,     active: true, dayOfWeek: "Wednesday" },
+      { label: "Thursday Throwback",  description: "Almost the weekend — $5 off any order",         badge: "✨ COMBO DEAL",    discountType: "flat",        discountValue: 5,     active: true, dayOfWeek: "Thursday"  },
+      { label: "Friday Feast",        description: "Kick off the weekend — $6 off any order",       badge: "🎉 WEEKEND START", discountType: "flat",        discountValue: 6,     active: true, dayOfWeek: "Friday"    },
     ],
   });
   console.log("Seeded promos.");
