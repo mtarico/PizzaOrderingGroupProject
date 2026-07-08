@@ -2,18 +2,21 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import "./Navbar.css";
+import { useLocation } from "react-router-dom";
 
 export default function Navbar() {
   const { totalItems } = useCart();
   const [open, setOpen] = useState(false);
+  const location = useLocation();
 
   return (
     <nav className="navbar">
 
       {/* TOP LOGO — NOT A LINK */}
-      <div className="navbar-top-logo">
-        <span className="logo">🍕 Eats-A-Pizza</span>
+      <div className="navbar-logo">
+      <span className="logo">🍕 Eats-A-Pizza</span>
       </div>
+
 
       {/* MOBILE MENU BUTTON */}
       <button className="menu-toggle" onClick={() => setOpen(!open)}>
@@ -28,7 +31,6 @@ export default function Navbar() {
           Home
           </Link>
 
-          
           <Link to="/menu" className="nav-link" onClick={() => setOpen(false)}>
             Order Now
           </Link>
