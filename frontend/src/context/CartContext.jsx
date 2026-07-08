@@ -89,7 +89,7 @@ export function CartProvider({ children }) {
     } else if (promoDiscount.discountType === "flat") {
       promoAmount = Number(promoDiscount.discountValue) || 0;
     } else if (promoDiscount.discountType === "freeDelivery") {
-      promoAmount = deliveryFee;
+      if (subtotal >= 25) promoAmount = deliveryFee;
     } else if (promoDiscount.discountType === "bundle") {
       const bundlePrice = Number(promoDiscount.discountValue);
       if (pizzaCount >= 2 && sideCount >= 1 && drinkCount >= 1) {

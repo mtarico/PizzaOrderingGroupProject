@@ -75,6 +75,12 @@ export default function Cart() {
               add <strong>{3 - pizzaCount} more pizza{3 - pizzaCount !== 1 ? "s" : ""}</strong> to get the cheapest one free!
             </div>
           )}
+          {promoDiscount?.discountType === "freeDelivery" && subtotal < 25 && (
+            <div className="deal-progress-banner">
+              🚗 <strong>{promoDiscount.label}</strong> applied —
+              add <strong>${(25 - subtotal).toFixed(2)} more</strong> to your order to unlock free delivery!
+            </div>
+          )}
           {promoDiscount?.discountType === "bundle" && (pizzaCount < 2 || sideCount < 1 || drinkCount < 1) && (
             <div className="deal-progress-banner">
               🛍️ <strong>{promoDiscount.label}</strong> applied — still need:
