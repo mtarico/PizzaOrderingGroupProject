@@ -4,16 +4,18 @@ import { categories } from "../../data/menuData";
 import "./Cart.css";
 
 export default function Cart() {
-  const { 
-    cart, 
-    increment, 
-    decrement, 
-    subtotal, 
+  const {
+    cart,
+    increment,
+    decrement,
+    subtotal,
     totalItems,
     tax,
     deliveryFee,
     promoAmount,
-    total
+    total,
+    promoDiscount,
+    pizzaCount,
   } = useCart();
 
   const navigate = useNavigate();
@@ -65,6 +67,12 @@ export default function Cart() {
 
         {/* Summary */}
         <div className="cart-summary">
+          {promoDiscount?.discountType === "buy2get1" && pizzaCount < 3 && (
+            <div className="deal-progress-banner">
+              🍕 <strong>{promoDiscount.label}</strong> applied —
+              add <strong>{3 - pizzaCount} more pizza{3 - pizzaCount !== 1 ? "s" : ""}</strong> to get the cheapest one free!
+            </div>
+          )}
           <div className="summary-row">
             <span>Subtotal</span>
             <span>${subtotal.toFixed(2)}</span>
@@ -82,7 +90,7 @@ export default function Cart() {
 
           {promoAmount > 0 && (
             <div className="summary-row discount-row">
-              <span>Deal Applied</span>
+              <span>{promoDiscount?.label ?? "Deal Applied"}</span>
               <span>−${promoAmount.toFixed(2)}</span>
             </div>
           )}
