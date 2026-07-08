@@ -16,6 +16,8 @@ export default function Cart() {
     total,
     promoDiscount,
     pizzaCount,
+    sideCount,
+    drinkCount,
   } = useCart();
 
   const navigate = useNavigate();
@@ -71,6 +73,14 @@ export default function Cart() {
             <div className="deal-progress-banner">
               🍕 <strong>{promoDiscount.label}</strong> applied —
               add <strong>{3 - pizzaCount} more pizza{3 - pizzaCount !== 1 ? "s" : ""}</strong> to get the cheapest one free!
+            </div>
+          )}
+          {promoDiscount?.discountType === "bundle" && (pizzaCount < 2 || sideCount < 1 || drinkCount < 1) && (
+            <div className="deal-progress-banner">
+              🛍️ <strong>{promoDiscount.label}</strong> applied — still need:
+              {pizzaCount < 2 && <> <strong>{2 - pizzaCount} more pizza{2 - pizzaCount !== 1 ? "s" : ""}</strong></>}
+              {sideCount < 1 && <> <strong>1 side</strong></>}
+              {drinkCount < 1 && <> <strong>1 drink</strong></>}
             </div>
           )}
           <div className="summary-row">

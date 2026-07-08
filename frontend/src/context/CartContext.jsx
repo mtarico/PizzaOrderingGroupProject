@@ -75,6 +75,8 @@ export function CartProvider({ children }) {
   }
 
   const pizzaCount = cart.filter((i) => i.category === "pizza").reduce((sum, i) => sum + i.qty, 0);
+  const sideCount  = cart.filter((i) => i.category === "sides").reduce((sum, i) => sum + i.qty, 0);
+  const drinkCount = cart.filter((i) => i.category === "drinks").reduce((sum, i) => sum + i.qty, 0);
 
   let promoAmount = 0;
 
@@ -88,6 +90,11 @@ export function CartProvider({ children }) {
       promoAmount = Number(promoDiscount.discountValue) || 0;
     } else if (promoDiscount.discountType === "freeDelivery") {
       promoAmount = deliveryFee;
+    } else if (promoDiscount.discountType === "bundle") {
+      const bundlePrice = Number(promoDiscount.discountValue);
+      if (pizzaCount >= 2 && sideCount >= 1 && drinkCount >= 1) {
+        promoAmount = Math.max(0, subtotal - bundlePrice);
+      }
     }
   }
 
@@ -110,6 +117,8 @@ export function CartProvider({ children }) {
         applyDiscount,
         promoAmount,
         pizzaCount,
+        sideCount,
+        drinkCount,
       }}
     >
       {children}

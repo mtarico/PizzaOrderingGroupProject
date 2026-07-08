@@ -28,7 +28,7 @@ async function main() {
   await prisma.promo.createMany({
     data: [
       { label: "Tuesday Special", description: "Buy 2 pizzas, get 1 free!", badge: "🔥 HOT DEAL", discountType: "buy2get1", discountValue: 0, active: true },
-      { label: "Family Bundle", description: "2 Large Pizzas + Sides + Drinks — $39.99", badge: "💰 SAVE $10", discountType: "flat", discountValue: 10, active: true },
+      { label: "Family Bundle", description: "2 Large Pizzas + Sides + Drinks — $39.99", badge: "💰 BUNDLE DEAL", discountType: "bundle", discountValue: 39.99, active: true },
       { label: "Free Delivery", description: "Free delivery on orders over $25", badge: "🚗 FREE", discountType: "freeDelivery", discountValue: 0, active: true },
     ],
   });

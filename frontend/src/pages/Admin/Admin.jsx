@@ -13,6 +13,7 @@ const DISCOUNT_TYPES = [
   { value: "flat", label: "Flat $ Off" },
   { value: "buy2get1", label: "Buy 2 Pizzas Get 1 Free" },
   { value: "freeDelivery", label: "Free Delivery" },
+  { value: "bundle", label: "Bundle (Fixed Price — 2 pizzas + side + drink)" },
 ];
 
 export default function Admin() {
@@ -231,14 +232,14 @@ export default function Admin() {
               <option key={t.value} value={t.value}>{t.label}</option>
             ))}
           </select>
-          {promoForm.discountType === "flat" && (
+          {(promoForm.discountType === "flat" || promoForm.discountType === "bundle") && (
             <input
               type="number"
               step="0.01"
               min="0"
               value={promoForm.discountValue}
               onChange={(e) => setPromoForm({ ...promoForm, discountValue: e.target.value })}
-              placeholder="Discount amount (e.g. 10)"
+              placeholder={promoForm.discountType === "bundle" ? "Bundle price (e.g. 39.99)" : "Discount amount (e.g. 10)"}
               required
             />
           )}
@@ -255,6 +256,7 @@ export default function Admin() {
                 <span className="admin-promo-meta">
                   {DISCOUNT_TYPES.find((t) => t.value === promo.discountType)?.label}
                   {promo.discountType === "flat" && ` — $${Number(promo.discountValue).toFixed(2)} off`}
+                  {promo.discountType === "bundle" && ` — $${Number(promo.discountValue).toFixed(2)} total`}
                   {" • "}
                   <span className={promo.active ? "status-active" : "status-inactive"}>
                     {promo.active ? "Active" : "Inactive"}
