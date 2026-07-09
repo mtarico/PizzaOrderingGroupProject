@@ -28,4 +28,13 @@
   font-size: 0.9rem;
   font-weight: 600;
   color: #212121;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .category-card {
+    width: 100%;
+    max-width: 180px;
+    height: 112px;
+  }
 }

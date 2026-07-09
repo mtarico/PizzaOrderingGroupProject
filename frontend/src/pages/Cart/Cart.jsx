@@ -3,15 +3,24 @@ import { useCart } from "../../context/CartContext";
 import { categories } from "../../data/menuData";
 import "./Cart.css";
 
-const TAX_RATE = 0.08;
-
 export default function Cart() {
-  const { cart, increment, decrement, subtotal, totalItems, discount, setDiscount } = useCart();
-  const navigate = useNavigate();
+  const {
+    cart,
+    increment,
+    decrement,
+    subtotal,
+    totalItems,
+    tax,
+    deliveryFee,
+    promoAmount,
+    total,
+    promoDiscount,
+    pizzaCount,
+    sideCount,
+    drinkCount,
+  } = useCart();
 
-  const tax = subtotal * TAX_RATE;
-  const discountAmount = Math.min(discount, subtotal);
-  const total = subtotal + tax - discountAmount;
+  const navigate = useNavigate();
 
   if (totalItems === 0) {
     return (
@@ -60,39 +69,60 @@ export default function Cart() {
 
         {/* Summary */}
         <div className="cart-summary">
+          {promoDiscount?.discountType === "buy2get1" && pizzaCount < 3 && (
+            <div className="deal-progress-banner">
+              🍕 <strong>{promoDiscount.label}</strong> applied —
+              add <strong>{3 - pizzaCount} more pizza{3 - pizzaCount !== 1 ? "s" : ""}</strong> to get the cheapest one free!
+            </div>
+          )}
+          {promoDiscount?.discountType === "freeDelivery" && subtotal < 25 && (
+            <div className="deal-progress-banner">
+              🚗 <strong>{promoDiscount.label}</strong> applied —
+              add <strong>${(25 - subtotal).toFixed(2)} more</strong> to your order to unlock free delivery!
+            </div>
+          )}
+          {promoDiscount?.discountType === "bundle" && (pizzaCount < 2 || sideCount < 1 || drinkCount < 1) && (
+            <div className="deal-progress-banner">
+              🛍️ <strong>{promoDiscount.label}</strong> applied — still need:
+              {pizzaCount < 2 && <> <strong>{2 - pizzaCount} more pizza{2 - pizzaCount !== 1 ? "s" : ""}</strong></>}
+              {sideCount < 1 && <> <strong>1 side</strong></>}
+              {drinkCount < 1 && <> <strong>1 drink</strong></>}
+            </div>
+          )}
           <div className="summary-row">
             <span>Subtotal</span>
             <span>${subtotal.toFixed(2)}</span>
           </div>
+
           <div className="summary-row">
             <span>Tax (8%)</span>
             <span>${tax.toFixed(2)}</span>
           </div>
-          <div className="summary-row discount-row">
-            <span>Discount</span>
-            <div className="discount-input-wrap">
-              <span>−$</span>
-              <input
-                type="number"
-                min="0"
-                step="0.01"
-                value={discount || ""}
-                placeholder="0.00"
-                onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)}
-                className="discount-input"
-              />
-            </div>
+
+          <div className="summary-row">
+            <span>Delivery Fee</span>
+            <span>${deliveryFee.toFixed(2)}</span>
           </div>
+
+          {promoAmount > 0 && (
+            <div className="summary-row discount-row">
+              <span>{promoDiscount?.label ?? "Deal Applied"}</span>
+              <span>−${promoAmount.toFixed(2)}</span>
+            </div>
+          )}
+
           <div className="summary-row total-row">
             <span>Total</span>
             <span>${total.toFixed(2)}</span>
           </div>
+
           <button
             className="btn-primary"
-            onClick={() => navigate("/confirmation")}
+            onClick={() => navigate("/checkout")}
           >
-            Place Order →
+            Checkout →
           </button>
+
           <button className="btn-secondary" onClick={() => navigate("/menu")}>
             Add More Items
           </button>

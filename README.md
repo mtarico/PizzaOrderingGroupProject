@@ -31,12 +31,12 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ## Tech Stack
 
-| Layer    | Tech                        |
-|----------|-----------------------------|
-| Frontend | React + Vite                |
-| Backend  | Node.js + Express           |
+| Layer    | Tech                              |
+|----------|-----------------------------------|
+| Frontend | React + Vite                      |
+| Backend  | Node.js + Express                 |
 | Database | SQLite (dev) / PostgreSQL (later) |
-| ORM      | Prisma v5                   |
+| ORM      | Prisma v5                         |
 
 ## Project Structure
 
@@ -44,24 +44,68 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 pizza-ordering-system/
 ├── frontend/
 │   └── src/
-│       ├── pages/       # Home, Menu, PizzaDetail, Cart, Confirmation
+│       ├── pages/       # Home, Menu, PizzaDetail, Cart, Checkout, Orders, Confirmation, Admin
 │       ├── components/  # Navbar, CategoryCard
 │       ├── context/     # CartContext (global cart state)
-│       └── data/        # menuData.js (sample data)
+│       ├── api/         # menuApi.js (fetch wrapper for all backend calls)
+│       └── data/        # menuData.js (categories, promos)
 ├── backend/
 │   ├── src/
-│   │   └── routes/      # menu.js, billing.js
-│   └── prisma/          # schema.prisma, seed.js
+│   │   └── routes/      # menu.js, billing.js, orders.js
+│   └── prisma/          # schema.prisma, seed.js, migrations/
 └── .gitignore
 ```
 
 ## API Endpoints
 
-| Method | Route        | Description                        |
-|--------|--------------|------------------------------------|
-| GET    | `/menu`      | All menu items (filter: `?category=pizza`) |
-| POST   | `/calculate` | `{ items: [{price, qty}] }` → `{ subtotal, tax, total }` |
-| GET    | `/health`    | Server health check                |
+| Method | Route                  | Description                                           |
+|--------|------------------------|-------------------------------------------------------|
+| GET    | `/menu`                | All menu items (filter: `?category=pizza`)            |
+| POST   | `/menu`                | Create menu item (admin auth required)                |
+| PUT    | `/menu/:id`            | Update menu item (admin auth required)                |
+| DELETE | `/menu/:id`            | Delete menu item (admin auth required)                |
+| POST   | `/menu/admin/login`    | Admin login → returns token                          |
+| GET    | `/menu/admin/me`       | Verify admin token                                    |
+| POST   | `/calculate`           | `{ items: [{price, qty}] }` → `{ subtotal, tax, total }` |
+| GET    | `/orders`              | All past orders with line items                       |
+| POST   | `/orders`              | Place a new order → returns saved order with ID       |
+| GET    | `/health`              | Server health check                                   |
+
+---
+
+## Pages
+
+| Route          | Page         | Description                                          |
+|----------------|--------------|------------------------------------------------------|
+| `/`            | Home         | Hero, promotions banner, category browse grid        |
+| `/menu`        | Menu         | Category tabs, live menu from backend, add to cart   |
+| `/menu/:id`    | PizzaDetail  | Customize size, sauce, crust, and quantity           |
+| `/cart`        | Cart         | Review items, adjust quantities, apply discount      |
+| `/checkout`    | Checkout     | Delivery address + fake payment form                 |
+| `/orders`      | Orders       | Full order history with collapsible order cards      |
+| `/admin`       | Admin        | Add, edit, and remove menu items (login required)    |
+
+---
+
+## Checkout Flow
+
+```
+Home → Menu → (PizzaDetail for pizzas) → Cart → Checkout → Orders
+```
+
+1. Add items to cart from the Menu page
+2. Pizzas go through a customization screen (size, sauce, crust)
+3. Review the cart and apply an optional discount
+4. Fill in delivery address and payment info on the Checkout page
+5. Order is saved to the database and you land on the Order History page
+
+> **Note:** Payment is fake — no real charge is made. Use any 16-digit card number (e.g. `4242 4242 4242 4242`), any future expiry (e.g. `12/27`), and any 3-digit CVV.
+
+---
+
+## Admin Dashboard
+
+Visit `/admin` to manage menu items. Demo credentials: `admin` / `admin123`.
 
 ---
 
@@ -87,6 +131,4 @@ pizza-ordering-system/
 
 By end of week, a user should be able to:
 
-**Open site → View Menu → Add Pizza → Remove Pizza → See Total**
-
-Payment is fake, database is optional for Sprint 1.
+**Open site → View Menu → Add Pizza → Remove Pizza → See Total → Checkout → View Order History**
