@@ -35,7 +35,7 @@ export default function Navbar() {
             Order Now
           </Link>
 
-          <Link to="/menu" className="nav-link underline" onClick={() => setOpen(false)}>
+          <Link to="/menu" className="nav-link" onClick={() => setOpen(false)}>
             Menu
           </Link>
 
