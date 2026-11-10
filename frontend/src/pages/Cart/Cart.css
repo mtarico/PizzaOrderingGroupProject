@@ -197,6 +197,10 @@
 
 /* MOBILE LAYOUT */
 @media (max-width: 768px) {
+  .cart-page {
+    padding: 1rem 0.75rem 1.5rem;
+  }
+
   .cart-layout {
     grid-template-columns: 1fr;
   }
@@ -250,4 +254,15 @@
     font-size: 1.1rem;
     margin-top: 0.75rem;
   }
+}
+
+.deal-progress-banner {
+  background: #fff8e1;
+  border: 1px solid #ffe082;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  color: #5d4037;
+  margin-bottom: 1rem;
+  line-height: 1.4;
 }

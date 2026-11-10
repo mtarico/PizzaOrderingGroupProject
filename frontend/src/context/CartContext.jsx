@@ -5,25 +5,36 @@ const CartContext = createContext(null);
 function cartReducer(state, action) {
   switch (action.type) {
     case "ADD_ITEM": {
-      // cartKey groups items with identical options together
       const existing = state.find((i) => i.cartKey === action.item.cartKey);
       if (existing) {
         return state.map((i) =>
-          i.cartKey === action.item.cartKey ? { ...i, qty: i.qty + 1 } : i
+          i.cartKey === action.item.cartKey
+            ? { ...i, qty: Number(i.qty) + 1 }
+            : i
         );
       }
       return [...state, { ...action.item, qty: 1 }];
     }
+
     case "INCREMENT":
       return state.map((i) =>
-        i.cartKey === action.cartKey ? { ...i, qty: i.qty + 1 } : i
+        i.cartKey === action.cartKey
+          ? { ...i, qty: Number(i.qty) + 1 }
+          : i
       );
+
     case "DECREMENT":
       return state
-        .map((i) => (i.cartKey === action.cartKey ? { ...i, qty: i.qty - 1 } : i))
+        .map((i) =>
+          i.cartKey === action.cartKey
+            ? { ...i, qty: Number(i.qty) - 1 }
+            : i
+        )
         .filter((i) => i.qty > 0);
+
     case "CLEAR_CART":
       return [];
+
     default:
       return state;
   }
@@ -31,19 +42,84 @@ function cartReducer(state, action) {
 
 export function CartProvider({ children }) {
   const [cart, dispatch] = useReducer(cartReducer, []);
-  const [discount, setDiscount] = useState(0);
+  const [promoDiscount, setPromoDiscount] = useState(null);
 
-  const addItem = (item) => dispatch({ type: "ADD_ITEM", item });
+  const addItem = (item) =>
+    dispatch({
+      type: "ADD_ITEM",
+      item: {
+        ...item,
+        price: Number(item.price),
+        qty: Number(item.qty || 1),
+      },
+    });
+
   const increment = (cartKey) => dispatch({ type: "INCREMENT", cartKey });
   const decrement = (cartKey) => dispatch({ type: "DECREMENT", cartKey });
   const clearCart = () => dispatch({ type: "CLEAR_CART" });
 
-  const totalItems = cart.reduce((sum, i) => sum + i.qty, 0);
-  const subtotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const totalItems = cart.reduce((sum, i) => sum + Number(i.qty), 0);
+
+  const subtotal = cart.reduce(
+    (sum, i) => sum + Number(i.price) * Number(i.qty),
+    0
+  );
+
+  const TAX_RATE = 0.08;
+  const tax = subtotal * TAX_RATE;
+
+  const deliveryFee = subtotal > 25 ? 0 : 4.99;
+
+  function applyDiscount(promo) {
+    setPromoDiscount(promo);
+  }
+
+  const pizzaCount = cart.filter((i) => i.category === "pizza").reduce((sum, i) => sum + i.qty, 0);
+  const sideCount  = cart.filter((i) => i.category === "sides").reduce((sum, i) => sum + i.qty, 0);
+  const drinkCount = cart.filter((i) => i.category === "drinks").reduce((sum, i) => sum + i.qty, 0);
+
+  let promoAmount = 0;
+
+  if (promoDiscount) {
+    if (promoDiscount.discountType === "buy2get1") {
+      const pizzas = cart.filter((i) => i.category === "pizza");
+      if (pizzaCount >= 3) {
+        promoAmount = Math.min(...pizzas.map((p) => Number(p.price)));
+      }
+    } else if (promoDiscount.discountType === "flat") {
+      promoAmount = Number(promoDiscount.discountValue) || 0;
+    } else if (promoDiscount.discountType === "freeDelivery") {
+      if (subtotal >= 25) promoAmount = deliveryFee;
+    } else if (promoDiscount.discountType === "bundle") {
+      const bundlePrice = Number(promoDiscount.discountValue);
+      if (pizzaCount >= 2 && sideCount >= 1 && drinkCount >= 1) {
+        promoAmount = Math.max(0, subtotal - bundlePrice);
+      }
+    }
+  }
+
+  const total = subtotal + tax + deliveryFee - promoAmount;
 
   return (
     <CartContext.Provider
-      value={{ cart, addItem, increment, decrement, clearCart, totalItems, subtotal, discount, setDiscount }}
+      value={{
+        cart,
+        addItem,
+        increment,
+        decrement,
+        clearCart,
+        totalItems,
+        subtotal,
+        tax,
+        deliveryFee,
+        total,
+        promoDiscount,
+        applyDiscount,
+        promoAmount,
+        pizzaCount,
+        sideCount,
+        drinkCount,
+      }}
     >
       {children}
     </CartContext.Provider>
